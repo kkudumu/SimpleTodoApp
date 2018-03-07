@@ -5,26 +5,39 @@ import { View, Text, TextInput, Button } from 'react-native';
 //create stuff
 class App extends React.Component{
   state = {
-    text: "This is our message on screen",
+    text: "",
     todo: []
   }
   addTodo = () => {
-    this.setState({todo: this.state.text})
+    var newTodo = this.state.text;
+    var arr = this.state.todo;
+    arr.push(newTodo);
+    this.setState({todo: arr, text: ""})
+  }
+  deleteTodo = (t) =>{
+    var arr = this.state.todo;
+    var pos = arr.indexOf(t);
+    arr.splice(pos, 1);
+    this.setState({todo: arr});
   }
   renderTodos= () => {
     return this.state.todo.map(t=>{
       return (
-        <Text>{t}</Text>
+        <Text 
+        key={t}
+        onPress={()=>{this.deleteTodo(t)}}
+        >{t}</Text>
       )
     })
   }
   render(){
     return(
       <View style={styles.viewStyle}>
-        <Text> Hello World This App Is Great </Text>
+        <Text> Simple Todo App </Text>
         <TextInput 
         style = {styles.inputStyle}
         onChangeText={(text)=>this.setState({text})}
+        value = {this.state.text}
         />
         <Button 
         title="Add Todo"
